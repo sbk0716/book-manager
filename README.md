@@ -231,3 +231,16 @@ Date: Sun, 06 Nov 2022 11:58:09 GMT
 }
 % 
 ```
+
+## 3.3. GET /book/detail/{book_id}
+```sh
+% curl -sS -b cookie.txt http://localhost:8080/book/detail/100 | jq -r '.'
+{
+  "id": 100,
+  "title": "kotlin入門",
+  "author": "コトリン太郎",
+  "release_date": "1950-10-01",
+  "rental_info": null
+}
+% 
+```

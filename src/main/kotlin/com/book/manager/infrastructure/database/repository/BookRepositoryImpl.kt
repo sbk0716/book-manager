@@ -16,12 +16,24 @@ import com.book.manager.infrastructure.database.record.custom.BookWithRentalReco
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
 
+/**
+ * BookRepositoryImpl Class
+ *
+ * Interface(XxxxRepository)を実装したClass(XxxxImpl)内にDB関連実装を閉じ込める。
+ * ORMに依存するClass(Record)をORMに依存しないClass(Model)にConvertして返す。
+ */
 @Suppress("SpringJavaInjectionPointsAutowiringInspection")
 @Repository
 class BookRepositoryImpl(
     private val bookWithRentalMapper: BookWithRentalMapper,
     private val bookMapper: BookMapper
 ) : BookRepository {
+    /**
+     * findAllWithRental() function
+     *
+     * 1. execute BookWithRentalMapper.select() function
+     *      1.1. execute toModel() function with it(BookWithRentalRecord)
+     */
     override fun findAllWithRental(): List<BookWithRental> {
         return bookWithRentalMapper.select().map { toModel(it) }
     }
@@ -42,6 +54,12 @@ class BookRepositoryImpl(
         bookMapper.deleteByPrimaryKey(id)
     }
 
+    /**
+     * toModel() function
+     *
+     * ORMに依存するClass(Record)をORMに依存しないClass(Model)にConvertして返す。
+     * BookWithRentalRecord(Record) -> BookWithRental(Model)
+     */
     private fun toModel(record: BookWithRentalRecord): BookWithRental {
         val book = Book(
             record.id!!,
@@ -60,6 +78,12 @@ class BookRepositoryImpl(
         return BookWithRental(book, rental)
     }
 
+    /**
+     * toRecord() function
+     *
+     * ORMに依存しないClass(Model)をORMに依存するClass(Record)にConvertして返す。
+     * Book(Model) -> BookRecord(Record)
+     */
     private fun toRecord(model: Book): BookRecord {
         return BookRecord(model.id, model.title, model.author, model.releaseDate)
     }
