@@ -1,5 +1,76 @@
-# 1. Set Up MySQL Database
-## 1.1. Start MySQL in Docker Container
+# 1. Project Overview
+
+## (1)App Features
+This app is able to use below function.
+
+**User Story**
+* You can add any book.
+* You can read the list of books.
+* You can read the details of any book.
+* You can search for a book by part of its title.
+* You can edit any book.
+* You can delete any book.
+
+## (2)Project Structure
+
+```sh
+.
+├── docker
+│   ├── db
+│   └── redis
+├── gradle
+│   └── wrapper
+├── sql
+└── src
+    ├── main
+    │   ├── kotlin
+    │   │   └── com
+    │   │       └── book
+    │   │           └── manager
+    │   │               ├── application
+    │   │               │   └── service
+    │   │               │       └── security
+    │   │               ├── domain
+    │   │               │   ├── enum
+    │   │               │   ├── model
+    │   │               │   └── repository
+    │   │               ├── infrastructure
+    │   │               │   └── database
+    │   │               │       ├── mapper
+    │   │               │       │   └── custom
+    │   │               │       ├── record
+    │   │               │       │   └── custom
+    │   │               │       └── repository
+    │   │               └── presentation
+    │   │                   ├── aop
+    │   │                   ├── config
+    │   │                   ├── controller
+    │   │                   ├── form
+    │   │                   └── handler
+    │   └── resources
+    └── test
+        ├── kotlin
+        │   └── com
+        │       └── book
+        │           └── manager
+        │               ├── application
+        │               │   └── service
+        │               ├── domain
+        │               │   └── model
+        │               └── presentation
+        │                   └── controller
+        └── resources
+            └── mockito-extensions
+```
+
+
+# 2. Usage
+## 2.0. Prerequisite
+* Install MySQL with Homebrew.
+* Install Docker Desktop(for Apple Ailicon Mac).
+* Install Azul JDK(for Apple Ailicon Mac).
+
+## 2.1. Start MySQL in Docker Container
 ```sh
 % ls | grep docker-compose.yml
 docker-compose.yml
@@ -15,7 +86,7 @@ c03499455b93   redis:latest   "docker-entrypoint.s…"   17 seconds ago   Up 15 
 % 
 ```
 
-## 1.2. Generate password hash
+## 2.2. Generate password hash
 ```sh
 % htpasswd -n -B pass
 New password: 
@@ -24,7 +95,7 @@ pass:$2y$05$dKLxqxq8cBj3wYGciicTdOR6zhfHiG3IEYreqyxkfFPU.Qq5w4KKS
 % 
 ```
 
-## 1.3. Create database and table
+## 2.3. Create database and table
 ```sh
 % mysql -h 127.0.0.1 --port 3306 -u root
 mysql> CREATE DATABASE book_manager;
@@ -68,7 +139,7 @@ Bye
 % 
 ```
 
-## 1.4. Insert data
+## 2.4. Insert data
 ```sh
 % mysql -h 127.0.0.1 --port 3306 -u root
 mysql> INSERT INTO book values(100, 'kotlin入門', 'コトリン太郎', '1950-10-01'), (200, 'java入門', 'ジャバ太郎', '2005-08-29');
@@ -88,7 +159,7 @@ mysql>
 mysql> exit
 ```
 
-## 1.5. Change password
+## 2.5. Change password
 ```sh
 % mysql -h 127.0.0.1 --port 3306 -u root
 mysql> ALTER USER 'root'@'localhost' identified BY 'mysql';
@@ -103,47 +174,22 @@ Bye
 % 
 ```
 
-# 2. Generate Code with MybatisGenerator
-## 2.1. Create directory
+
+## 2.6 Running the application
+
 ```sh
-% mkdir -p src/main/kotlin/com/book/manager/infrastructure/database/
-% ls src/main/kotlin/com/book/manager/         
-BookManagerApplication.kt       infrastructure
-%
-% ls src/main/kotlin/com/book/manager/infrastructure/
-database
-%
+% ./gradlew bootRun
 ```
 
-## 2.2. Execute Gradle task(mbGenerator)
-```sh
-% ./gradlew mbGenerator
-Starting a Gradle Daemon, 3 busy and 1 incompatible Daemons could not be reused, use --status for details
+## 2.3. Packaging and run the application
 
-> Task :mbGenerator
-[ant:mbgenerator] Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
-[ant:mbgenerator] Column role_type, specified for override in table rental, does not exist in the table.
-[ant:mbgenerator] Column role_type, specified for override in table book, does not exist in the table.
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/record/Rental.kt was overwritten
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/mapper/RentalDynamicSqlSupport.kt was overwritten
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/mapper/RentalMapper.kt was overwritten
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/record/User.kt was overwritten
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/mapper/UserDynamicSqlSupport.kt was overwritten
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/mapper/UserMapper.kt was overwritten
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/record/Book.kt was overwritten
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/mapper/BookDynamicSqlSupport.kt was overwritten
-[ant:mbgenerator] Existing file /Users/admin/.gradle/daemon/6.9.2/src/main/kotlin/com/book/manager/infrastructure/database/mapper/BookMapper.kt was overwritten
-
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
-Use '--warning-mode all' to show the individual deprecation warnings.
-See https://docs.gradle.org/6.9.2/userguide/command_line_interface.html#sec:command_line_warnings
-
-BUILD SUCCESSFUL in 5s
-1 actionable task: 1 executed
-% 
+```
+% ./gradlew build
+% java -jar build/libs/book-manager-0.0.1-SNAPSHOT.jar 
 ```
 
-# 3. Usage
+
+# 3. Operation verification
 ## 3.1. GET /login
 ```sh
 % curl -i -c cookie.txt -H 'Content-Type: application/x-www-f
