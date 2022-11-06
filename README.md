@@ -181,7 +181,7 @@ Bye
 % ./gradlew bootRun
 ```
 
-## 2.3. Packaging and run the application
+## 2.7. Packaging and run the application
 
 ```
 % ./gradlew build
@@ -192,9 +192,8 @@ Bye
 # 3. Operation verification
 ## 3.1. GET /login
 ```sh
-% curl -i -c cookie.txt -H 'Content-Type: application/x-www-f
-orm-urlencoded' -X POST -d 'email=user@test.com' -d 'pass=1234' http://localhost:8080/login
-HTTP/1.1 200 
+% curl -i -c cookie.txt -H 'Content-Type: application/x-www-form-urlencoded' -X POST -d 'email=user@test.com' -d 'pass=1234' http://localhost:8080/login
+HTTP/1.1 200
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
